@@ -5,7 +5,7 @@ const Filter = () => {
   const [filter, setFilter] = useState();
   const [filterInput, setFilterInput] = useState();
   const [filterCol, setFilterCol] = useState();
-  const [filterData, setFilterData] = useState();
+  const [filterData, setFilterData] = useState([]);
   const [filterField, setFilterField] = useState();
   const column = [
     { name: "firstName", type: "string" },
@@ -23,7 +23,6 @@ const Filter = () => {
     { name: "startDate", type: "date" },
     { name: "subjectPropertyAddress", type: "string" },
   ];
-  // const useState = { filter, setFilter };
 
   const handleChange = (e) => {
     setFilterField(e.target.value);
@@ -53,42 +52,43 @@ const Filter = () => {
     let data = [];
     if (filterCol === "Equals") {
       if (filterField === "firstName") {
-        data = filterData.filter((e) => e.firstName == filterInput);
+        data = borrowers.filter((e) => e.firstName == filterInput);
       } else if (filterField === "lastName") {
-        data = filterData.filter((e) => e.lastName == filterInput);
+        data = borrowers.filter((e) => e.lastName == filterInput);
       } else if (filterField === "maritalStatus") {
-        data = filterData.filter((e) => e.maritalStatus == filterInput);
+        data = borrowers.filter((e) => e.maritalStatus == filterInput);
       }
     } else if (filterCol === "Includes") {
       if (filterField === "firstName") {
-        data = filterData.filter((e) => e.firstName.includes(filterInput));
+        data = borrowers.filter((e) => e.firstName.includes(filterInput));
       }
       if (filterField === "lastName") {
-        data = filterData.filter((e) => e.lastName.includes(filterInput));
+        data = borrowers.filter((e) => e.lastName.includes(filterInput));
       }
     } else if (filterCol === "Greater than") {
       if (filterField === "creditScore") {
-        data = filterData.filter((e) => e.creditScore > filterInput);
+        data = borrowers.filter((e) => e.creditScore > filterInput);
       } else if (filterField === "w2Income") {
-        data = filterData.filter((e) => e.w2Income > filterInput);
+        data = borrowers.filter((e) => e.w2Income > filterInput);
       }
     } else if (filterCol === "Less than") {
       if (filterField === "creditScore") {
-        data = filterData.filter((e) => e.creditScore < filterInput);
+        data = borrowers.filter((e) => e.creditScore < filterInput);
       } else if (filterField === "w2Income") {
-        data = filterData.filter((e) => e.w2Income < filterInput);
+        data = borrowers.filter((e) => e.w2Income < filterInput);
       }
     }
     return data;
   }
+
   useEffect(() => {
     if (filterInput) {
-      const d = getUser();
-      console.log(d);
+      let d = getUser();
+      setFilterData(d);
     } else {
       setFilterData(borrowers);
     }
-  });
+  }, [filterInput, filterField]);
   return (
     <div className="filter">
       <div className="d-flex head m-2">
@@ -130,6 +130,7 @@ const Filter = () => {
           }}
         />
       </div>
+
       <div>
         <table className="table table-bordered table-sm">
           <thead>
